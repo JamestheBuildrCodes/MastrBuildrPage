@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mastr Buildr — Build the Future</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a1628;
+    --navy2: #0f2040;
+    --blue: #1a56db;
+    --blue2: #2563eb;
+    --sky: #38bdf8;
+    --cyan: #00d9ff;
+    --white: #f0f4ff;
+    --muted: #8ba0c4;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── CUSTOM CURSOR ─────────────────────────── */
+  #cursor {
+    position: fixed; top: 0; left: 0; z-index: 9999;
+    pointer-events: none; mix-blend-mode: difference;
+  }
+  .c-dot {
+    position: absolute; width: 8px; height: 8px;
+    background: var(--cyan); border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s;
+  }
+  .c-ring {
+    position: absolute; width: 36px; height: 36px;
+    border: 1.5px solid rgba(0,217,255,0.5); border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: transform 0.12s ease, width 0.3s, height 0.3s, opacity 0.3s;
+  }
+  .c-blueprint {
+    position: absolute; transform: translate(-50%,-50%);
+    pointer-events: none;
+  }
+  .c-blueprint line { stroke: rgba(0,217,255,0.15); stroke-width: 1; }
+
+  /* ── NAV ───────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    padding: 1.2rem 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(20px);
+    background: rgba(10,22,40,0.75);
+    border-bottom: 1px solid var(--glass-border);
+    transition: all 0.4s;
+  }
+  .nav-logo img { height: 32px; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px; background: var(--cyan);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    background: var(--blue2); color: #fff !important;
+    padding: 0.55rem 1.4rem; border-radius: 6px;
+    font-weight: 500; font-size: 0.85rem;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--sky) !important; color: var(--navy) !important; transform: translateY(-1px); }
+  .nav-cta::after { display: none !important; }
+
+  /* ── HERO ──────────────────────────────────── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding: 0 5%;
+  }
+
+  /* Blueprint grid background */
+  .bp-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(26,86,219,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,86,219,0.07) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridShift 20s linear infinite;
+  }
+  @keyframes gridShift {
+    0% { background-position: 0 0; }
+    100% { background-position: 60px 60px; }
+  }
+
+  /* Glowing orbs */
+  .orb {
+    position: absolute; border-radius: 50%; filter: blur(80px); z-index: 0;
+    animation: float 8s ease-in-out infinite;
+  }
+  .orb1 { width: 600px; height: 600px; background: rgba(26,86,219,0.18); top: -100px; right: -100px; }
+  .orb2 { width: 400px; height: 400px; background: rgba(0,217,255,0.1); bottom: -50px; left: 20%; animation-delay: -3s; }
+  @keyframes float {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(26,86,219,0.15); border: 1px solid rgba(26,86,219,0.4);
+    border-radius: 100px; padding: 0.35rem 1rem;
+    font-size: 0.78rem; color: var(--sky); font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 800; line-height: 1.04;
+    letter-spacing: -0.03em;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1 .accent { 
+    background: linear-gradient(135deg, var(--blue2), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  h1 .line-ghost {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.2);
+  }
+
+  .hero-sub {
+    font-size: 1.15rem; color: var(--muted); font-weight: 300;
+    line-height: 1.7; margin: 1.8rem 0 2.5rem;
+    max-width: 500px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-btns {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue2), #1e40af);
+    color: #fff; border: none; padding: 0.9rem 2rem;
+    border-radius: 8px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 500; cursor: none;
+    position: relative; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(26,86,219,0.4);
+  }
+  .btn-primary::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--sky), var(--cyan));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(26,86,219,0.5); }
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary span { position: relative; z-index: 1; color: inherit; }
+
+  .btn-ghost {
+    background: transparent; border: 1px solid var(--glass-border);
+    color: var(--muted); padding: 0.9rem 2rem;
+    border-radius: 8px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; cursor: none;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--cyan); color: var(--white); transform: translateY(-2px); }
+
+  /* ISOMETRIC CITY — the WOW element */
+  .iso-city {
+    position: absolute; right: 3%; top: 50%;
+    transform: translateY(-50%);
+    width: 520px; height: 520px; z-index: 1;
+    perspective: 800px;
+  }
+
+  .iso-grid {
+    width: 100%; height: 100%;
+    transform: rotateX(55deg) rotateZ(-35deg);
+    transform-style: preserve-3d;
+    position: relative;
+  }
+
+  .iso-block {
+    position: absolute;
+    transform-style: preserve-3d;
+    cursor: none;
+  }
+  .iso-face {
+    position: absolute; backface-visibility: hidden;
+  }
+  /* Top face */
+  .iso-top { transform-origin: 50% 100%; }
+  /* Right face */
+  .iso-right { transform-origin: 0% 50%; }
+  /* Left face */
+  .iso-left { transform-origin: 100% 50%; }
+
+  @keyframes buildUp {
+    from { transform: scaleZ(0); }
+    to { transform: scaleZ(1); }
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(20px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%;
+    transform: translateX(-50%); z-index: 2;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--muted); font-size: 0.75rem; letter-spacing: 0.1em;
+    animation: fadeUp 1s 1s ease both, bob 2s 2s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(var(--cyan), transparent);
+  }
+
+  /* ── MARQUEE ───────────────────────────────── */
+  .marquee-wrap {
+    overflow: hidden; border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem 0; background: rgba(255,255,255,0.02);
+  }
+  .marquee-track {
+    display: flex; gap: 3rem; width: max-content;
+    animation: marquee 25s linear infinite;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-item {
+    white-space: nowrap; font-family: 'Syne', sans-serif;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .marquee-item .sep { color: var(--cyan); font-size: 1.2rem; }
+
+  /* ── SERVICES ──────────────────────────────── */
+  section { padding: 7rem 5%; }
+
+  .section-label {
+    font-family: 'Syne', sans-serif; font-size: 0.72rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-label::before {
+    content: ''; width: 30px; height: 1px; background: var(--cyan);
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .section-sub { color: var(--muted); font-size: 1rem; font-weight: 300; max-width: 480px; line-height: 1.7; margin-bottom: 4rem; }
+
+  .services-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5px; background: var(--glass-border);
+    border: 1px solid var(--glass-border); border-radius: 16px; overflow: hidden;
+  }
+
+  .service-card {
+    background: var(--navy); padding: 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .service-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(26,86,219,0.08), transparent);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .service-card:hover { background: var(--navy2); }
+  .service-card:hover::before { opacity: 1; }
+
+  .service-num {
+    font-family: 'Syne', sans-serif; font-size: 0.7rem;
+    color: var(--blue2); font-weight: 700; letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+  .service-icon {
+    width: 48px; height: 48px; margin-bottom: 1.5rem;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 12px; background: rgba(26,86,219,0.15);
+    transition: background 0.3s, transform 0.3s;
+  }
+  .service-card:hover .service-icon { background: rgba(0,217,255,0.15); transform: rotate(-5deg) scale(1.1); }
+  .service-icon svg { width: 22px; height: 22px; }
+
+  .service-card h3 {
+    font-family: 'Syne', sans-serif; font-size: 1.15rem;
+    font-weight: 700; margin-bottom: 0.8rem;
+    transition: color 0.3s;
+  }
+  .service-card:hover h3 { color: var(--sky); }
+  .service-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+  .service-arrow {
+    position: absolute; bottom: 2rem; right: 2rem;
+    width: 32px; height: 32px; border: 1px solid var(--glass-border);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: translateX(-8px);
+    transition: opacity 0.3s, transform 0.3s, border-color 0.3s;
+  }
+  .service-card:hover .service-arrow { opacity: 1; transform: translateX(0); border-color: var(--cyan); }
+  .service-arrow svg { width: 14px; height: 14px; color: var(--cyan); }
+
+  /* ── STATS ─────────────────────────────────── */
+  #stats {
+    padding: 4rem 5%;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 2px; background: var(--glass-border);
+    border: 1px solid var(--glass-border); margin: 0 5%;
+    border-radius: 16px; overflow: hidden;
+  }
+  .stat-item {
+    background: var(--navy2); padding: 3rem 2rem;
+    text-align: center; position: relative;
+    transition: background 0.3s;
+  }
+  .stat-item:hover { background: rgba(26,86,219,0.1); }
+  .stat-num {
+    font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800;
+    background: linear-gradient(135deg, #fff, var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+  .stat-label { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; }
+
+  /* ── ABOUT ─────────────────────────────────── */
+  #about { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+
+  .about-visual {
+    position: relative; aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .about-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid var(--glass-border);
+  }
+  .about-ring:nth-child(1) { width: 100%; height: 100%; animation: spin 30s linear infinite; border-color: rgba(26,86,219,0.2); }
+  .about-ring:nth-child(2) { width: 75%; height: 75%; animation: spin 20s linear infinite reverse; }
+  .about-ring:nth-child(3) { width: 50%; height: 50%; animation: spin 12s linear infinite; border-color: rgba(0,217,255,0.2); }
+
+  .about-ring::after {
+    content: ''; position: absolute; top: -4px; left: 50%;
+    width: 8px; height: 8px; border-radius: 50%; background: var(--cyan);
+    transform: translateX(-50%);
+  }
+  @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+
+  .about-center {
+    position: relative; z-index: 1; text-align: center;
+    background: var(--navy2); border: 1px solid var(--glass-border);
+    border-radius: 20px; padding: 2.5rem;
+    width: 55%; aspect-ratio: 1;
+    display: flex; flex-direction: column; justify-content: center;
+    align-items: center; gap: 0.5rem;
+    box-shadow: 0 0 60px rgba(26,86,219,0.15);
+  }
+  .about-center-logo img { width: 140px; }
+  .about-center p { color: var(--muted); font-size: 0.8rem; letter-spacing: 0.05em; }
+
+  .about-text .section-label { margin-top: 0; }
+  .about-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .about-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.2rem 1.5rem; border-radius: 10px;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .about-item:hover { border-color: rgba(26,86,219,0.4); background: rgba(26,86,219,0.07); }
+  .about-item-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--cyan);
+    flex-shrink: 0; margin-top: 6px;
+  }
+  .about-item-text h4 { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .about-item-text p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+  /* ── CONSULTATION ──────────────────────────── */
+  #consultation {
+    background: linear-gradient(135deg, var(--navy2), rgba(26,86,219,0.1));
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    position: relative; overflow: hidden;
+  }
+  #consultation::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: 
+      linear-gradient(rgba(26,86,219,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,86,219,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .consult-inner {
+    position: relative; z-index: 1;
+    max-width: 700px; margin: 0 auto; text-align: center;
+  }
+  .consult-inner h2 { margin-bottom: 1rem; }
+  .consult-inner .section-sub { margin: 0 auto 3rem; text-align: center; }
+
+  .consult-form {
+    background: rgba(10,22,40,0.8); border: 1px solid var(--glass-border);
+    border-radius: 16px; padding: 3rem; backdrop-filter: blur(20px);
+    text-align: left;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label {
+    font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); font-weight: 500;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border);
+    color: var(--white); padding: 0.85rem 1.1rem; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none; cursor: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--blue2); background: rgba(26,86,219,0.05);
+  }
+  .form-group select option { background: var(--navy2); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-submit {
+    width: 100%; padding: 1rem;
+    background: linear-gradient(135deg, var(--blue2), #1e40af);
+    color: #fff; border: none; border-radius: 8px;
+    font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700;
+    cursor: none; transition: transform 0.2s, box-shadow 0.2s;
+    position: relative; overflow: hidden; margin-top: 0.5rem;
+    box-shadow: 0 4px 20px rgba(26,86,219,0.4);
+    letter-spacing: 0.02em;
+  }
+  .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(26,86,219,0.6); }
+
+  /* ── TESTIMONIALS ──────────────────────────── */
+  #testimonials { overflow: hidden; }
+
+  .testi-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin-top: 1rem;
+  }
+  .testi-card {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 16px; padding: 2rem;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .testi-card::before {
+    content: '\201C'; position: absolute; top: -0.5rem; left: 1.2rem;
+    font-family: 'Syne', sans-serif; font-size: 6rem; font-weight: 800;
+    color: rgba(26,86,219,0.15); line-height: 1; pointer-events: none;
+  }
+  .testi-card:hover { transform: translateY(-6px); border-color: rgba(26,86,219,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+  .testi-stars { display: flex; gap: 3px; margin-bottom: 1.2rem; }
+  .star { color: var(--cyan); font-size: 0.9rem; }
+  .testi-text { color: var(--muted); font-size: 0.9rem; line-height: 1.75; margin-bottom: 1.5rem; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 1rem; }
+  .testi-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue2), var(--cyan));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+  }
+  .testi-name { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; }
+  .testi-role { color: var(--muted); font-size: 0.78rem; margin-top: 0.1rem; }
+
+  /* ── PARTNERS ──────────────────────────────── */
+  #partners { text-align: center; }
+  #partners h2 { margin-bottom: 0.5rem; }
+  #partners .section-sub { margin: 0 auto 3.5rem; }
+
+  .partners-grid {
+    display: flex; flex-wrap: wrap; gap: 1.5rem;
+    justify-content: center; align-items: center;
+  }
+  .partner-badge {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 12px; padding: 1.5rem 2.5rem;
+    display: flex; align-items: center; gap: 1rem;
+    transition: border-color 0.3s, background 0.3s, transform 0.3s;
+    min-width: 180px;
+  }
+  .partner-badge:hover { border-color: rgba(26,86,219,0.4); background: rgba(26,86,219,0.07); transform: translateY(-4px); }
+  .partner-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .partner-name { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--muted); transition: color 0.3s; }
+  .partner-badge:hover .partner-name { color: var(--white); }
+
+  /* ── CTA BANNER ────────────────────────────── */
+  #cta-final {
+    margin: 0 5% 7rem; border-radius: 24px;
+    background: linear-gradient(135deg, var(--blue2), #1e40af, rgba(0,217,255,0.3));
+    padding: 5rem; text-align: center; position: relative; overflow: hidden;
+  }
+  #cta-final::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='60' height='60' fill='none'/%3E%3Cpath d='M0 60 L60 0 M-10 10 L10 -10 M50 70 L70 50' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3C/svg%3E");
+  }
+  #cta-final h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; }
+  #cta-final p { color: rgba(255,255,255,0.75); margin-bottom: 2.5rem; font-size: 1.05rem; }
+
+  /* ── FOOTER ─────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--glass-border);
+    padding: 3rem 5%; display: flex; align-items: center;
+    justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+  }
+  .footer-logo img { height: 26px; opacity: 0.7; }
+  .footer-copy { color: var(--muted); font-size: 0.82rem; }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--white); }
+
+  /* ── REVEAL ANIMATIONS ─────────────────────── */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .iso-city { display: none; }
+    #about { grid-template-columns: 1fr; gap: 3rem; }
+    #stats { grid-template-columns: repeat(2, 1fr); }
+    .testi-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    #cta-final { padding: 3rem 2rem; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div id="cursor">
+  <svg class="c-blueprint" width="200" height="200" viewBox="0 0 200 200">
+    <line id="hline" x1="0" y1="100" x2="200" y2="100"/>
+    <line id="vline" x1="100" y1="0" x2="100" y2="200"/>
+  </svg>
+  <div class="c-dot"></div>
+  <div class="c-ring"></div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">
+    <img src="/mnt/user-data/uploads/mb2.png" alt="Mastr Buildr">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#partners">Partners</a></li>
+    <li><a href="#consultation" class="nav-cta">Book a Call</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="bp-grid"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      AI-Powered Tech Solutions
+    </div>
+    <h1>
+      We <span class="accent">Build</span><br>
+      Your Digital<br>
+      <span class="line-ghost">Empire.</span>
+    </h1>
+    <p class="hero-sub">
+      From stunning websites to intelligent web apps—we craft technology 
+      that drives growth, scales with ambition, and is built for the future.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('consultation').scrollIntoView({behavior:'smooth'})">
+        <span>Book a Free Consultation →</span>
+      </button>
+      <button class="btn-ghost" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">
+        Explore Services
+      </button>
+    </div>
+  </div>
+
+  <!-- Isometric City -->
+  <div class="iso-city" id="isoCity"></div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
+<!-- Services -->
+<section id="services">
+  <div class="section-label reveal">What We Do</div>
+  <h2 class="reveal reveal-delay-1">Full-Stack <span style="background:linear-gradient(135deg,var(--blue2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Digital</span><br>Solutions</h2>
+  <p class="section-sub reveal reveal-delay-2">Everything you need to build, launch, and scale your digital presence — under one roof.</p>
+  
+  <div class="services-grid reveal reveal-delay-3">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <h3>Website Building</h3>
+      <p>Pixel-perfect, blazing-fast websites that convert visitors into customers. Responsive, accessible, and built to last.</p>
+      <div class="service-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>Web App Development</h3>
+      <p>Scalable, intelligent web applications engineered with modern frameworks and AI-first architecture.</p>
+      <div class="service-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <h3>Innovative Tech</h3>
+      <p>We bring emerging technologies — AI, automation, and next-gen integrations — into your business workflow.</p>
+      <div class="service-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="1.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      </div>
+      <h3>Business Strategy</h3>
+      <p>Data-driven roadmaps, competitive positioning, and growth frameworks that align technology with business goals.</p>
+      <div class="service-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="1.5"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+      </div>
+      <h3>Digital Marketing</h3>
+      <p>High-ROI paid advertising on Google, Meta, and beyond. We build funnels that turn ad spend into revenue.</p>
+      <div class="service-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+    <div class="service-card" style="background:linear-gradient(135deg,rgba(26,86,219,0.12),rgba(0,217,255,0.05));border:1px solid rgba(26,86,219,0.3);">
+      <div class="service-num" style="color:var(--cyan)">∞</div>
+      <h3 style="font-size:1.3rem;margin-bottom:1rem">Ready to build<br>something great?</h3>
+      <p>Let's turn your vision into a digital reality. Book a free strategy call today.</p>
+      <button class="btn-primary" style="margin-top:1.5rem;font-size:0.85rem;padding:0.7rem 1.4rem" onclick="document.getElementById('consultation').scrollIntoView({behavior:'smooth'})">
+        <span>Get Started →</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div id="stats">
+  <div class="stat-item reveal">
+    <div class="stat-num" data-count="150">0</div>
+    <div class="stat-label">Projects Delivered</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-1">
+    <div class="stat-num" data-count="98">0</div>
+    <div class="stat-label">Client Satisfaction</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-2">
+    <div class="stat-num" data-count="40">0</div>
+    <div class="stat-label">Team Members</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-3">
+    <div class="stat-num" data-count="5">0</div>
+    <div class="stat-label">Years of Excellence</div>
+  </div>
+</div>
+
+<!-- About -->
+<section id="about" style="padding:7rem 5%">
+  <div class="about-visual reveal">
+    <div class="about-ring"></div>
+    <div class="about-ring"></div>
+    <div class="about-ring"></div>
+    <div class="about-center">
+      <div class="about-center-logo"><img src="/mnt/user-data/uploads/mb2.png" alt="Mastr Buildr"></div>
+      <p>Building Tomorrow</p>
+    </div>
+  </div>
+  <div class="about-text">
+    <div class="section-label reveal">About Us</div>
+    <h2 class="reveal reveal-delay-1">We are the <span style="background:linear-gradient(135deg,var(--blue2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">builders</span><br>behind the builders</h2>
+    <p class="section-sub reveal reveal-delay-2">Mastr Buildr is a technology company on a mission to democratize world-class digital infrastructure for ambitious businesses.</p>
+    <div class="about-list">
+      <div class="about-item reveal reveal-delay-1">
+        <div class="about-item-dot"></div>
+        <div class="about-item-text">
+          <h4>AI-First Approach</h4>
+          <p>Every solution we build is enhanced with AI — from code generation to intelligent automation.</p>
+        </div>
+      </div>
+      <div class="about-item reveal reveal-delay-2">
+        <div class="about-item-dot"></div>
+        <div class="about-item-text">
+          <h4>End-to-End Delivery</h4>
+          <p>Strategy, design, development, and marketing — we own the full lifecycle so you don't have to.</p>
+        </div>
+      </div>
+      <div class="about-item reveal reveal-delay-3">
+        <div class="about-item-dot"></div>
+        <div class="about-item-text">
+          <h4>Built to Scale</h4>
+          <p>Our systems are architected from day one to grow with your business, not hold it back.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Consultation -->
+<section id="consultation">
+  <div class="consult-inner">
+    <div class="section-label" style="justify-content:center;margin-bottom:1rem">
+      Free Consultation
+    </div>
+    <h2 class="reveal">Let's Build<br><span style="background:linear-gradient(135deg,var(--sky),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Together</span></h2>
+    <p class="section-sub reveal reveal-delay-1">Tell us about your project and we'll get back to you within 24 hours with a free strategy assessment.</p>
+
+    <div class="consult-form reveal reveal-delay-2">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="John">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Doe">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="john@company.com">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" placeholder="+1 (555) 000-0000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full">
+          <label>Service Interested In</label>
+          <select>
+            <option value="">Select a service...</option>
+            <option>Website Building</option>
+            <option>Web App Development</option>
+            <option>Innovative Tech / AI</option>
+            <option>Business Strategy</option>
+            <option>Digital Marketing</option>
+            <option>Full Package</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full">
+          <label>Tell Us About Your Project</label>
+          <textarea placeholder="Describe your vision, goals, and timeline..."></textarea>
+        </div>
+      </div>
+      <button class="form-submit" id="submitBtn">Book My Free Consultation →</button>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonials">
+  <div class="section-label reveal">Social Proof</div>
+  <h2 class="reveal reveal-delay-1">Trusted by <span style="background:linear-gradient(135deg,var(--blue2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">ambitious</span> teams</h2>
+  <p class="section-sub reveal reveal-delay-2">Don't take our word for it — here's what our clients say.</p>
+
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Mastr Buildr transformed our entire digital presence in under 8 weeks. The web app they built is faster, smarter, and our conversions jumped 340%. Absolutely world-class team."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AK</div>
+        <div>
+          <div class="testi-name">Alex Kim</div>
+          <div class="testi-role">CEO, NovaSphere Inc.</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-1">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"The strategy they developed gave us clarity we hadn't had in 3 years of business. Then they executed it flawlessly. If you need a tech partner who actually cares — this is them."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">SM</div>
+        <div>
+          <div class="testi-name">Sarah Mitchell</div>
+          <div class="testi-role">Founder, GreenLeap Co.</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-2">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Our paid ads ROAS went from 1.8x to 6.4x in 60 days. The digital marketing team at Mastr Buildr knows the game at a level I've never seen before. Game-changing."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">JR</div>
+        <div>
+          <div class="testi-name">James Rivera</div>
+          <div class="testi-role">CMO, TechForge Labs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Partners -->
+<section id="partners">
+  <div class="section-label reveal" style="justify-content:center">Our Partners</div>
+  <h2 class="reveal reveal-delay-1">Backed by the <span style="background:linear-gradient(135deg,var(--blue2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">best</span> in tech</h2>
+  <p class="section-sub reveal reveal-delay-2">We work with leading platforms and technology providers to deliver exceptional results.</p>
+
+  <div class="partners-grid reveal reveal-delay-3">
+    <div class="partner-badge">
+      <div class="partner-icon" style="background:rgba(66,133,244,0.15)">
+        <svg width="20" height="20" viewBox="0 0 24 24"><text y="18" font-size="18">G</text></svg>
+      </div>
+      <span class="partner-name">Google Cloud</span>
+    </div>
+    <div class="partner-badge">
+      <div class="partner-icon" style="background:rgba(255,153,0,0.15)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,153,0,0.8)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+      </div>
+      <span class="partner-name">AWS</span>
+    </div>
+    <div class="partner-badge">
+      <div class="partner-icon" style="background:rgba(0,122,255,0.15)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(0,122,255,0.8)"><rect width="10" height="10" rx="2"/><rect x="12" y="12" width="10" height="10" rx="2"/></svg>
+      </div>
+      <span class="partner-name">Microsoft Azure</span>
+    </div>
+    <div class="partner-badge">
+      <div class="partner-icon" style="background:rgba(0,0,0,0.3)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      <span class="partner-name">Vercel</span>
+    </div>
+    <div class="partner-badge">
+      <div class="partner-icon" style="background:rgba(99,91,255,0.15)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(99,91,255,0.8)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <span class="partner-name">Stripe</span>
+    </div>
+    <div class="partner-badge">
+      <div class="partner-icon" style="background:rgba(0,200,83,0.15)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(0,200,83,0.8)"><rect x="2" y="2" width="20" height="20" rx="5"/></svg>
+      </div>
+      <span class="partner-name">Shopify</span>
+    </div>
+    <div class="partner-badge">
+      <div class="partner-icon" style="background:rgba(255,106,0,0.15)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,106,0,0.8)"><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      <span class="partner-name">Cloudflare</span>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<div id="cta-final">
+  <h2 class="reveal">Your next chapter<br>starts with one call.</h2>
+  <p class="reveal reveal-delay-1">Join 150+ companies that trusted Mastr Buildr to build their digital future.</p>
+  <button class="btn-primary reveal reveal-delay-2" style="font-size:1rem;padding:1rem 2.5rem" onclick="document.getElementById('consultation').scrollIntoView({behavior:'smooth'})">
+    <span>Book Your Free Consultation →</span>
+  </button>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo"><img src="/mnt/user-data/uploads/mb2.png" alt="Mastr Buildr"></div>
+  <span class="footer-copy">© 2025 Mastr Buildr Inc. All rights reserved.</span>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<script>
+// ── CURSOR ────────────────────────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const dot = cursor.querySelector('.c-dot');
+const ring = cursor.querySelector('.c-ring');
+const hline = document.getElementById('hline');
+const vline = document.getElementById('vline');
+
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+function updateCursor() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  dot.style.left = mx + 'px';
+  dot.style.top = my + 'px';
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  cursor.querySelector('.c-blueprint').style.left = mx + 'px';
+  cursor.querySelector('.c-blueprint').style.top = my + 'px';
+  // Blueprint crosshair lines extend from cursor
+  const extH = 80 + Math.sin(Date.now() * 0.001) * 20;
+  hline.setAttribute('x1', 100 - extH); hline.setAttribute('x2', 100 + extH);
+  const extV = 80 + Math.cos(Date.now() * 0.001) * 20;
+  vline.setAttribute('y1', 100 - extV); vline.setAttribute('y2', 100 + extV);
+  requestAnimationFrame(updateCursor);
+}
+updateCursor();
+
+document.querySelectorAll('button, a, input, select, textarea').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    dot.style.width = '16px'; dot.style.height = '16px';
+    ring.style.width = '60px'; ring.style.height = '60px';
+  });
+  el.addEventListener('mouseleave', () => {
+    dot.style.width = '8px'; dot.style.height = '8px';
+    ring.style.width = '36px'; ring.style.height = '36px';
+  });
+});
+
+// ── ISOMETRIC CITY (the WOW moment) ─────────────────────────────────────────
+const cityEl = document.getElementById('isoCity');
+
+const buildings = [
+  // [col, row, width, depth, height, colorBase]
+  [0,0,60,60,120,'#1a56db'],[1,0,60,60,180,'#1d4ed8'],
+  [2,0,60,60,80,'#2563eb'], [3,0,60,60,200,'#1a56db'],
+  [0,1,60,60,90,'#2563eb'],[1,1,60,60,240,'#1e40af'],
+  [2,1,60,60,140,'#1d4ed8'],[3,1,60,60,100,'#2563eb'],
+  [0,2,60,60,160,'#1a56db'],[1,2,60,60,80,'#2563eb'],
+  [2,2,60,60,300,'#1e40af'],[3,2,60,60,120,'#1d4ed8'],
+  [0,3,60,60,70,'#2563eb'],[1,3,60,60,130,'#1a56db'],
+  [2,3,60,60,90,'#1d4ed8'],[3,3,60,60,200,'#1e40af'],
+];
+
+const isoSvg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+isoSvg.setAttribute('viewBox','-100 -300 520 620');
+isoSvg.setAttribute('width','520'); isoSvg.setAttribute('height','520');
+isoSvg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%';
+
+// Hexagonal projection helpers
+function isoX(c,r,h) { return (c - r) * 30; }
+function isoY(c,r,h) { return (c + r) * 17 - h; }
+
+// Add ground grid
+for(let c=0;c<4;c++) for(let r=0;r<4;r++) {
+  const x = isoX(c,r,0), y = isoY(c,r,0);
+  const tile = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  tile.setAttribute('points',`${x},${y} ${x+30},${y+17} ${x},${y+34} ${x-30},${y+17}`);
+  tile.setAttribute('fill','rgba(26,86,219,0.08)');
+  tile.setAttribute('stroke','rgba(26,86,219,0.2)');
+  tile.setAttribute('stroke-width','0.5');
+  isoSvg.appendChild(tile);
+}
+
+buildings.forEach((b, i) => {
+  const [c, r, w, d, h, color] = b;
+  const bx = isoX(c, r, 0); const by = isoY(c, r, 0);
+  const bh = h * 0.35;
+  const wh = 30; const wv = 17;
+
+  // Dark face (left)
+  const left = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  left.setAttribute('points',`${bx-wh},${by+wv} ${bx},${by+2*wv} ${bx},${by+2*wv+bh} ${bx-wh},${by+wv+bh}`);
+  left.setAttribute('fill', shadeColor(color,-40));
+  left.style.transition = `all 0.5s ${i*0.04}s`;
+  left.style.opacity = '0';
+  left.style.transform = 'translateY(20px)';
+
+  // Medium face (right)
+  const right = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  right.setAttribute('points',`${bx},${by+2*wv} ${bx+wh},${by+wv} ${bx+wh},${by+wv+bh} ${bx},${by+2*wv+bh}`);
+  right.setAttribute('fill', shadeColor(color,-20));
+  right.style.transition = `all 0.5s ${i*0.04+0.02}s`;
+  right.style.opacity = '0';
+  right.style.transform = 'translateY(20px)';
+
+  // Top face
+  const top = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  top.setAttribute('points',`${bx-wh},${by+wv-bh} ${bx},${by-bh} ${bx+wh},${by+wv-bh} ${bx},${by+2*wv-bh}`);
+  top.setAttribute('fill', color);
+  top.style.transition = `all 0.5s ${i*0.04+0.04}s`;
+  top.style.opacity = '0';
+  top.style.transform = 'translateY(20px)';
+
+  // Windows on right face
+  for(let wi=1;wi<4;wi++) for(let wj=1;wj<3;wj++) {
+    const wr = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    const wx = bx + wi*8 - 4;
+    const wy = by + wv + wj*12 - bh*0.8;
+    wr.setAttribute('x', wx); wr.setAttribute('y', wy);
+    wr.setAttribute('width','5'); wr.setAttribute('height','7');
+    wr.setAttribute('fill', Math.random() > 0.4 ? 'rgba(0,217,255,0.7)' : 'rgba(255,255,255,0.1)');
+    wr.setAttribute('rx','1');
+    isoSvg.appendChild(wr);
+  }
+
+  isoSvg.appendChild(left);
+  isoSvg.appendChild(right);
+  isoSvg.appendChild(top);
+
+  // Animate in
+  setTimeout(() => {
+    left.style.opacity = '1'; left.style.transform = 'none';
+    right.style.opacity = '1'; right.style.transform = 'none';
+    top.style.opacity = '1'; top.style.transform = 'none';
+  }, 300 + i * 60);
+});
+
+// Hover glow effect on city
+isoSvg.addEventListener('mousemove', e => {
+  const rect = isoSvg.getBoundingClientRect();
+  const ox = (e.clientX - rect.left - rect.width/2) * 0.02;
+  const oy = (e.clientY - rect.top - rect.height/2) * 0.02;
+  cityEl.style.transform = `translateY(-50%) rotateY(${ox}deg) rotateX(${oy}deg)`;
+});
+isoSvg.addEventListener('mouseleave', () => {
+  cityEl.style.transform = 'translateY(-50%)';
+  cityEl.style.transition = 'transform 0.5s ease';
+});
+
+cityEl.appendChild(isoSvg);
+
+function shadeColor(hex, pct) {
+  const n = parseInt(hex.replace('#',''),16);
+  const r = Math.min(255, Math.max(0, (n>>16) + pct));
+  const g = Math.min(255, Math.max(0, ((n>>8)&0xff) + pct));
+  const b = Math.min(255, Math.max(0, (n&0xff) + pct));
+  return `rgb(${r},${g},${b})`;
+}
+
+// ── MARQUEE ───────────────────────────────────────────────────────────────────
+const items = ['Website Building','Web App Development','AI Innovation','Business Strategy','Digital Marketing','UI/UX Design','Cloud Architecture','SEO & Growth'];
+const track = document.getElementById('marquee');
+[...items,...items].forEach(txt => {
+  const d = document.createElement('div');
+  d.className = 'marquee-item';
+  d.innerHTML = `${txt} <span class="sep">✦</span>`;
+  track.appendChild(d);
+});
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── COUNTER ANIMATION ─────────────────────────────────────────────────────────
+const numObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(!e.isIntersecting) return;
+    const el = e.target;
+    const target = parseInt(el.dataset.count);
+    const suffix = target === 98 ? '%' : target === 5 ? '+' : '+';
+    let start = 0;
+    const dur = 1500;
+    const step = timestamp => {
+      if(!start) start = timestamp;
+      const p = Math.min((timestamp-start)/dur, 1);
+      el.textContent = Math.floor(p * target) + suffix;
+      if(p < 1) requestAnimationFrame(step);
+      else el.textContent = target + suffix;
+    };
+    requestAnimationFrame(step);
+    numObserver.unobserve(el);
+  });
+}, {threshold:0.5});
+document.querySelectorAll('[data-count]').forEach(el => numObserver.observe(el));
+
+// ── FORM SUBMIT ───────────────────────────────────────────────────────────────
+document.getElementById('submitBtn').addEventListener('click', function() {
+  this.textContent = '✓ Consultation Booked! We\'ll be in touch within 24 hours.';
+  this.style.background = 'linear-gradient(135deg, #059669, #047857)';
+  this.disabled = true;
+});
+
+// ── PARALLAX ─────────────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  document.querySelector('.bp-grid').style.transform = `translateY(${y * 0.3}px)`;
+  document.querySelector('.orb1').style.transform = `translateY(${y * 0.15}px)`;
+});
+</script>
+</body>
+</html>
