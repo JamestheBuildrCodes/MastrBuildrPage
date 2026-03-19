@@ -1,0 +1,19 @@
+{
+  "name": "mastrbuildr-site",
+  "version": "1.0.0",
+  "description": "Mastr Buildr Inc. — Official Website",
+  "private": true,
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Static site — no build step required'"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
