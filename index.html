@@ -569,13 +569,13 @@
     max-width: 860px; margin: 0 auto;
   }
   .social-card {
-    flex: 1 1 160px; max-width: 200px;
+    flex: 0 0 auto; width: 110px;
     background: var(--glass); border: 1px solid var(--glass-border);
-    border-radius: 16px; padding: 2rem 1.5rem;
-    display: flex; flex-direction: column; align-items: center; gap: 0.9rem;
+    border-radius: 16px; padding: 1.4rem 1rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.65rem;
     text-decoration: none; color: var(--white);
     transition: transform 0.3s, border-color 0.3s, background 0.3s, box-shadow 0.3s;
-     position: relative; overflow: hidden;
+    position: relative; overflow: hidden;
   }
   .social-card::before {
     content: ''; position: absolute; inset: 0;
@@ -584,14 +584,14 @@
   }
   .social-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
   .social-icon {
-    width: 52px; height: 52px; border-radius: 14px;
+    width: 56px; height: 56px; border-radius: 16px;
     display: flex; align-items: center; justify-content: center;
     transition: transform 0.3s;
   }
-  .social-card:hover .social-icon { transform: scale(1.1) rotate(-5deg); }
-  .social-icon svg { width: 26px; height: 26px; }
-  .social-name { font-family: 'Syne', sans-serif; font-size: 0.88rem; font-weight: 700; }
-  .social-handle { color: var(--muted); font-size: 0.75rem; }
+  .social-card:hover .social-icon { transform: scale(1.12) rotate(-5deg); }
+  .social-icon svg { width: 28px; height: 28px; }
+  .social-name { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; }
+  .social-handle { display: none; }
   /* Per-platform colors */
   .sc-ig:hover { border-color: rgba(225,48,108,0.4); background: rgba(225,48,108,0.06); }
   .sc-x:hover  { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.05); }
@@ -967,7 +967,7 @@
     #cta-final { padding: 3rem 2rem; }
     .nav-links { display: none; }
     .social-grid { gap: 1rem; }
-    .social-card { flex: 1 1 130px; }
+    .social-card { width: 90px; padding: 1.1rem 0.7rem; }
     .process-track { grid-template-columns: 1fr 1fr; gap: 2rem; }
     .process-track::before { display: none; }
     #chat-panel { width: calc(100vw - 3rem); right: 1.5rem; }
