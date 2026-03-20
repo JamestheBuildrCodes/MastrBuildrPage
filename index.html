@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mastr Buildr — Build the Future</title>
-<link rel="icon" type="image/jpeg" href="data:image/jpeg;base64," sizes="32x32">
+
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEtUlEQVR4nO2b3U+bVRzHP+cUCistb/LSCnYKLkOCKJoZoy4zOjNjvFBi4pWaaNT/wXjptbdmF5gtXuidWZaoNyBhE5PNMCQDYd0YL4OxlvEOG7Q9x4v2odDw0j600JfnmzzpeU7PeZ7f9/v7nnPaPj2CQ4LWWifTXggh0hXLtvuk68LJEt4P6RIk5RdNNfF4pFqIlF0s3cTjkSohDnyRwyYej4MKYbrzUROPh1khpJlOmUYezMeUtACZSN6AmdgStk0mE98JiQ6JhByQbeQh8Zj3FSAbyRtIJHZTk2AuYU8Bsjn7BvbjsKsAuUDewF5cdhQgl8gb2I2TNQfEV+Ri9g3sxM1ywNaTXM6+gXiOlgOMQj5k38BWrpYDIL+yb8DgbDngqAM4auS9ACKbxr8m9Q8yUuIAHT3MQCmVcFsBpDpdBQfprDWEtaZAxvKilEYIiBhre74i9bEygJQy2k9tlrXW0WyLKGt4FAwRUprS4sLNexg/+ymlkdKcN0w7IBxWCAEFUjC0GOTf+XU0CikFQgiklEgpth2R+lhZCLj82z9oHSF/a2aZjq7bkXbR97UOIQT4phfp6LzFhT9vb/b/+eoYfXfno+TN+fBAc8Dg9BLdA/cp8FSjSpx8+KTm4g9/MBNYpramDClgYXGNLz49w/kfOwmGoOF4NUXHCpmceEh9fRkdF6/y8UevEHiwQJGnFp8sp84leanhCdY3Nni3rY6bEwvc9a/wOASzy0FePF5K78gs00tBXm2s5N7sKu+/XMvpJjdKa2QSz0iScoAh1dzCCl1dA/z0+xDfXbqD7/4qzuICHq1r+von+PrLt7kxMMGpU41UVLj45KvztL3QyOefnaGn18f4RAAlNBXlLt5563man/PyILDI2TebKS+SfNveQudNP7/0TlNRYsO/FKJ/cpW51SBL60F+vT7DN+3NNLmdjPrXkDZJq7cyOjSSGwpJzQFKKWw2yZXeYT5o/55nzr5OWXMz68Ewj8MQVgqHo4CmRg81VSWcaHAzNjZLZXkJvjszLK2sElYhTjTW0N0zghSSldU1bvSP0tJUx1PeasYv++geCnDMbqPB7eRCzyQjU8sU2iRrG2FQmmK7oHswwNTcGkhJ29OVlDnshJVOekwnNQS0jig8Phmg56//cFRVE3Q5qXe7qKp04SkM0XfNx+nXmvj7mo/WFi9j435crmIGBqaYX17h5LMepE0yOHSP9861Mj75kNExPy1N9XgbPVwZ9jOzsM4bJ6twlzu4dH2KqrJCap3FBLXCaZcU2+30DPvxVjlwFdkoLbHTXFcBOja5pkWAxGGsAOlYuVMLU8ug1hqlYuvZ1iVJR5cztfmqQYCOtt9curTGJgVax5wlpSC82S6yDCodO4/eENBoHZXWWE5NPiXPqk+C6UDefxeQh/VvrEyEEEJYDjjqAI4algBweP/KzCQYnC0HGIV8csFWrpYDtp7kgwviOVoOiK/IZRfsxM1ywE6VueiC3Tjt6oBcEmEvLnsOgVwQYT8O1hywX4NsdkEisSfkgGwUIdGYkyaW6b8hJpuspOeATHaDmdhMTYKZKILZmKxtc6kKJG83TsYjb7fOxiNvN0/vhkzdPv8/TGD/uc9URz4AAAAASUVORK5CYII=" sizes="64x64">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEtUlEQVR4nO2b3U+bVRzHP+cUCistb/LSCnYKLkOCKJoZoy4zOjNjvFBi4pWaaNT/wXjptbdmF5gtXuidWZaoNyBhE5PNMCQDYd0YL4OxlvEOG7Q9x4v2odDw0j600JfnmzzpeU7PeZ7f9/v7nnPaPj2CQ4LWWifTXggh0hXLtvuk68LJEt4P6RIk5RdNNfF4pFqIlF0s3cTjkSohDnyRwyYej4MKYbrzUROPh1khpJlOmUYezMeUtACZSN6AmdgStk0mE98JiQ6JhByQbeQh8Zj3FSAbyRtIJHZTk2AuYU8Bsjn7BvbjsKsAuUDewF5cdhQgl8gb2I2TNQfEV+Ri9g3sxM1ywNaTXM6+gXiOlgOMQj5k38BWrpYDIL+yb8DgbDngqAM4auS9ACKbxr8m9Q8yUuIAHT3MQCmVcFsBpDpdBQfprDWEtaZAxvKilEYIiBhre74i9bEygJQy2k9tlrXW0WyLKGt4FAwRUprS4sLNexg/+ymlkdKcN0w7IBxWCAEFUjC0GOTf+XU0CikFQgiklEgpth2R+lhZCLj82z9oHSF/a2aZjq7bkXbR97UOIQT4phfp6LzFhT9vb/b/+eoYfXfno+TN+fBAc8Dg9BLdA/cp8FSjSpx8+KTm4g9/MBNYpramDClgYXGNLz49w/kfOwmGoOF4NUXHCpmceEh9fRkdF6/y8UevEHiwQJGnFp8sp84leanhCdY3Nni3rY6bEwvc9a/wOASzy0FePF5K78gs00tBXm2s5N7sKu+/XMvpJjdKa2QSz0iScoAh1dzCCl1dA/z0+xDfXbqD7/4qzuICHq1r+von+PrLt7kxMMGpU41UVLj45KvztL3QyOefnaGn18f4RAAlNBXlLt5563man/PyILDI2TebKS+SfNveQudNP7/0TlNRYsO/FKJ/cpW51SBL60F+vT7DN+3NNLmdjPrXkDZJq7cyOjSSGwpJzQFKKWw2yZXeYT5o/55nzr5OWXMz68Ewj8MQVgqHo4CmRg81VSWcaHAzNjZLZXkJvjszLK2sElYhTjTW0N0zghSSldU1bvSP0tJUx1PeasYv++geCnDMbqPB7eRCzyQjU8sU2iRrG2FQmmK7oHswwNTcGkhJ29OVlDnshJVOekwnNQS0jig8Phmg56//cFRVE3Q5qXe7qKp04SkM0XfNx+nXmvj7mo/WFi9j435crmIGBqaYX17h5LMepE0yOHSP9861Mj75kNExPy1N9XgbPVwZ9jOzsM4bJ6twlzu4dH2KqrJCap3FBLXCaZcU2+30DPvxVjlwFdkoLbHTXFcBOja5pkWAxGGsAOlYuVMLU8ug1hqlYuvZ1iVJR5cztfmqQYCOtt9curTGJgVax5wlpSC82S6yDCodO4/eENBoHZXWWE5NPiXPqk+C6UDefxeQh/VvrEyEEEJYDjjqAI4algBweP/KzCQYnC0HGIV8csFWrpYDtp7kgwviOVoOiK/IZRfsxM1ywE6VueiC3Tjt6oBcEmEvLnsOgVwQYT8O1hywX4NsdkEisSfkgGwUIdGYkyaW6b8hJpuspOeATHaDmdhMTYKZKILZmKxtc6kKJG83TsYjb7fOxiNvN0/vhkzdPv8/TGD/uc9URz4AAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -2049,7 +2051,7 @@
       </div>
       <div class="footer-contact-item">
         <span class="footer-contact-label">Send an Email</span>
-        <a href="mailto:mastrbuildr2020@gmail.com" class="footer-contact-value">mastrbuildr2020@gmail.com</a>
+        <a href="/cdn-cgi/l/email-protection#adc0ccded9dfcfd8c4c1c9df9f9d9f9dedcac0ccc4c183cec2c0" class="footer-contact-value"><span class="__cf_email__" data-cfemail="74191507000616011d18100646444644341319151d185a171b19">[email&#160;protected]</span></a>
       </div>
       <div class="footer-contact-item">
         <span class="footer-contact-label">Follow Us</span>
@@ -2072,13 +2074,13 @@
     <div class="footer-bottom-links">
       <a href="#">Privacy Policy</a>
       <a href="#">Terms of Service</a>
-      <a href="mailto:mastrbuildr2020@gmail.com">Contact</a>
+      <a href="/cdn-cgi/l/email-protection#97faf6e4e3e5f5e2fefbf3e5a5a7a5a7d7f0faf6fefbb9f4f8fa">Contact</a>
     </div>
   </div>
 </footer>
 
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── INIT: mark body as JS-ready so reveals & cursor work ─────────────────────
 document.body.classList.add('js-ready');
 
@@ -2489,15 +2491,4 @@ function sendChat() {
     addMsg(getBotReply(msg), 'bot');
     const botMsgs = document.querySelectorAll('.chat-msg.bot').length;
     if (botMsgs === 3) {
-      setTimeout(() => addMsg('💡 Ready to take the next step? <strong><a href="#consultation" onclick="toggleChat()" style="color:var(--cyan);text-decoration:none">Book your free consultation →</a></strong>', 'bot'), 800);
-    }
-  }, 900 + Math.random() * 600);
-}
-
-function quickAsk(question) {
-  const input = document.getElementById('chatInput');
-  if (input) { input.value = question; sendChat(); }
-}
-</script>
-</body>
-</html>
+      setTimeout(() => addMsg('💡 Ready to take the next step? <strong><a href="#consultation" onclick="toggleChat()" style="color
